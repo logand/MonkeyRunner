@@ -1,5 +1,6 @@
 #from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
-import json, sys
+import sys
+from com.xhaus.jyson import JysonCodec as json
 
 def run_input(action):
     #newdevice.touch(action['x'], action['y'], DOWN)

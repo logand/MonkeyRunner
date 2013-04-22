@@ -11,9 +11,9 @@ def run_input(action, newdevice):
 
 def run_jblock(filename, newdevice):
     f = open(filename, 'r')
-    '''for line in f:
+    for line in f:
         device_input = json.loads(line)
-        run_input(device_input, newdevice)'''
+        run_input(device_input, newdevice)
 
 
 def main():
