@@ -7,10 +7,11 @@ def run_input(action, newdevice):
     counter = (action['up'] - action['down'])/1000
     MonkeyRunner.sleep(counter)
     newdevice.touch(action['x'], action['y'], 'UP')
-    #print 'touch at (' + str(action['x']) + ", " + str(action['y']) + ") for " + str(counter) + " seconds"
+    print 'touch at (' + str(action['x']) + ", " + str(action['y']) + ") for " + str(counter) + " seconds"
 
 def run_jblock(filename, newdevice):
     f = open(filename, 'r')
+    print "opened file"
     for line in f:
         device_input = json.loads(line)
         run_input(device_input, newdevice)
