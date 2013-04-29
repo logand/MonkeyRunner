@@ -3,6 +3,7 @@ import sys
 from com.xhaus.jyson import JysonCodec as json
 
 def run_input(action, newdevice, test):
+    actionComplete = True
     if action['type'] == 'touch':
         counter = (action['up'] - action['down'])/1000
         if test:
@@ -28,25 +29,32 @@ def run_input(action, newdevice, test):
             for i in range(times):
                 print 'pressed %s key for %d' % (action['keys'][i]['key'], counter)
         else:
-            '''
-            pressKey = action['keys'][0]['key']
-            newdevice.press('KEYCODE_SHIFT_LEFT', MonkeyDevice.DOWN)
-            '''
             for i in range(times):
                 newdevice.press(action['keys'][i]['key'], MonkeyDevice.DOWN)
             MonkeyRunner.sleep(counter)
             for i in range(times):
                 newdevice.press(action['keys'][i]['key'], MonkeyDevice.UP)
     else:
-        print 'could not type action'
+        actionComplete = False
+    return actionComplete
 
 
 def run_jblock(filename, newdevice):
     f = open(filename, 'r')
     print "opened file"
+    totalCompleted = 0
+    totalActions = 0
+    newdevice.wake()
     for line in f:
+        totalActions += 1
         device_input = json.loads(line)
-        run_input(device_input, newdevice, False)
+        complete = run_input(device_input, newdevice, False)
+        if complete:
+            totalCompleted += 1
+        else:
+            action = str(device_input).replace(': u', ': ')
+            print 'could not replay action ' + str(action)
+    print str(totalCompleted)+ '/' + str(totalActions) + ' actions completed'
 
 def main():
     if len(sys.argv) == 1:
