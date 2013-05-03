@@ -3,3 +3,5 @@
 {"type": "touch", "y": 435, "down": 78884, "up": 78884, "x": 285 }
 {"type": "hello"}
 {"type": "dont"}
+{"type": "touch", "x": 285}
+{"type": "touch", "y": 'hello', "down": 78884, "up": 78884, "x": 285 }
