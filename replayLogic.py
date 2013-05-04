@@ -6,7 +6,7 @@ def run_input(action, newdevice, test):
     actionComplete = True
     if action['type'] == 'touch':
         if 'x' in action and 'y' in action and 'up' in action and 'down' in action:
-            counter = (action['up'] - action['down'])/1000
+            counter = (float(action['up']) - float(action['down']))/1000
             if test:
                 print 'touch at (' + str(action['x']) + ", " + str(action['y']) + ") for " + str(counter) + " seconds"
             else:
@@ -20,7 +20,7 @@ def run_input(action, newdevice, test):
             actionComplete = False
         
     elif action['type'] == 'drag':
-        counter = action['up'] - action['down']
+        counter = float(action['up']) - float(action['down'])
         strTuple = (action['points'][0]['x'], action['points'][0]['y'])
         endTuple = (action['points'][1]['x'], action['points'][1]['y'])
         if test:
@@ -28,7 +28,7 @@ def run_input(action, newdevice, test):
         else:
             newdevice.drag(strTuple, endTuple, counter, 10)
     elif action['type'] == 'press':
-        counter = action['up'] - action['down']
+        counter = float(action['up']) - float(action['down'])
         times = len(action['keys'])
         #print str(times) + 'keys to press'
         if test:
@@ -44,6 +44,14 @@ def run_input(action, newdevice, test):
         actionComplete = False
     return actionComplete
 
+def get_time_difference(curr_line, prev_line):
+    if "'" not in curr_line and "'" not in prev_line:
+        curr_event = json.loads(curr_line)
+        prev_event = json.loads(prev_line)
+        difference = (float(curr_event['down']) - float(prev_event['up'])) / 1000
+        return difference
+    else:
+        return 0
 
 def run_jblock(filename, newdevice):
     f = open(filename, 'r')
@@ -64,7 +72,12 @@ def run_jblock(filename, newdevice):
     screenshot = newdevice.takeSnapshot()
     screenshot.writeToFile(startShot)
     '''
+    prev_line = None
     for line in f:
+        if prev_line != None:
+            time_diff = get_time_difference(line, prev_line)
+            time.sleep(time_diff)
+        prev_line = line
         totalActions += 1
         singleQuotes = line.find("\'")
         if singleQuotes == -1:
@@ -78,6 +91,7 @@ def run_jblock(filename, newdevice):
         else:
             print 'could not replay action ' + line
     print str(totalCompleted)+ '/' + str(totalActions) + ' actions completed'
+    f.close()
     '''
     time.sleep(5)
     screenshotFinal = newdevice.takeSnapshot()
