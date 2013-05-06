@@ -11,9 +11,9 @@ def run_input(action, newdevice, test):
                 print 'touch at (' + str(action['x']) + ", " + str(action['y']) + ") for " + str(counter) + " seconds"
             else:
                 if str(action['x']).isdigit() and str(action['y']).isdigit():
-                    newdevice.touch(action['x'], action['y'], 'DOWN')
+                    newdevice.touch(action['x'], action['y'], 'DOWN_AND_UP')
                     MonkeyRunner.sleep(counter)
-                    newdevice.touch(action['x'], action['y'], 'UP')
+                    #newdevice.touch(action['x'], action['y'], 'UP')
                 else:
                     actionComplete = False
         else:
