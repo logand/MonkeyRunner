@@ -1,4 +1,4 @@
-AndroidRecordandReplayUI
+MonkeyRunner - Android Record and Replay UI Testing Framework
 ========================
 
 Developed for COMS 6998 - Cloud and Mobile Security Seminar - Columbia University - Spring 2013
